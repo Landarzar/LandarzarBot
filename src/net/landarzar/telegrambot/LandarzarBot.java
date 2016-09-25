@@ -45,8 +45,6 @@ public class LandarzarBot extends TelegramBot
 	public LandarzarBot(TelegramBotProperties prop)
 	{
 		super(prop);
-
-		this.StartBot();
 	}
 
 	/*
@@ -64,6 +62,15 @@ public class LandarzarBot extends TelegramBot
 
 		SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Hello World");
 		this.methodEnqueue(sm);
+	}
+	
+	public void start(){
+		super.StartBot();
+	}
+	
+
+	public void stop(){
+		super.StopBot();
 	}
 
 	/*

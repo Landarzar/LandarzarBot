@@ -5,6 +5,7 @@ package net.landarzar.telegrambot;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.security.InvalidParameterException;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -12,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import jline.console.ConsoleReader;
+import jline.console.completer.StringsCompleter;
 import net.landarzar.telegram.TelegramBotProperties;
 
 /**
@@ -101,11 +104,30 @@ public class Application
 		try {
 			TelegramBotProperties tprop = loadProperties();
 			LandarzarBot bot = new LandarzarBot(tprop);
+			
 
-			Thread.sleep(4000);
+            ConsoleReader reader = new ConsoleReader();
+
+            reader.setPrompt("prompt> ");
+            reader.addCompleter(new StringsCompleter("help", "start", "status", "stop", "send", "quit", "exit", "clear"));
+            
+            String line;
+            PrintWriter out = new PrintWriter(reader.getOutput());
+
+            while ((line = reader.readLine()) != null) {
+                    out.println("======>\"" + line + "\"");
+                
+                out.flush();
+                if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
+                    break;
+                }
+                if (line.equalsIgnoreCase("clear")) {
+                    reader.clearScreen();
+                }
+            }
+
+
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
