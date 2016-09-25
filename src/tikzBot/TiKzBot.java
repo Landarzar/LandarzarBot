@@ -61,22 +61,52 @@ public class TiKzBot extends TelegramBot
 			} else {
 
 				prop.load(input);
-				
-				tprop.SYSTEM_THREADED = Boolean.parseBoolean(prop.getProperty("SYSTEM_THREADED"));
-				tprop.SYSTEM_TICK = Integer.parseInt(prop.getProperty("SYSTEM_TICK"));
-				tprop.NET_BOT_ID = Integer.parseInt(prop.getProperty("NET_BOT_ID"));
-				tprop.NET_BOT_TOKEN = prop.getProperty("NET_BOT_TOKEN");
-				tprop.NET_UPDATE_INTERVAL = Integer.parseInt(prop.getProperty("NET_UPDATE_INTERVAL"));
-				tprop.NET_BASEURL= prop.getProperty("NET_BASEURL");
 
-				// // load a properties file from class path, inside static
-				// method
-				// prop.load(input);
-				//
-				// // get the property value and print it out
-				// System.out.println(prop.getProperty("database"));
-				// System.out.println(prop.getProperty("dbuser"));
-				// System.out.println(prop.getProperty("dbpassword"));
+				if (prop.getProperty("SYSTEM_THREADED") != null) {
+					tprop.SYSTEM_THREADED = Boolean.parseBoolean(prop.getProperty("SYSTEM_THREADED"));
+				} 
+//				else {
+//					System.err.println("SYSTEM_THREADED have to be set");
+//					return;
+//				}
+
+				if (prop.getProperty("SYSTEM_TICK") != null) {
+					tprop.SYSTEM_TICK = Integer.parseInt(prop.getProperty("SYSTEM_TICK"));
+				} 
+//				else {
+//					System.err.println("SYSTEM_TICK have to be set");
+//					return;
+//				}
+
+				if (prop.getProperty("NET_BOT_ID") != null) {
+					tprop.NET_BOT_ID = Integer.parseInt(prop.getProperty("NET_BOT_ID"));
+				} else {
+					System.err.println("NET_BOT_ID have to be set");
+					return;
+				}
+
+				if (prop.getProperty("NET_BOT_TOKEN") != null) {
+					tprop.NET_BOT_TOKEN = prop.getProperty("NET_BOT_TOKEN");
+				} else {
+					System.err.println("NET_BOT_TOKEN have to be set");
+					return;
+				}
+
+				if (prop.getProperty("NET_UPDATE_INTERVAL") != null) {
+					tprop.NET_UPDATE_INTERVAL = Integer.parseInt(prop.getProperty("NET_UPDATE_INTERVAL"));
+				} 
+//				else {
+//					System.err.println("NET_UPDATE_INTERVAL have to be set");
+//					return;
+//				}
+
+				if (prop.getProperty("NET_BASEURL") != null) {
+					tprop.NET_BASEURL = prop.getProperty("NET_BASEURL");
+				} 
+//				else {
+//					System.err.println("NET_BASEURL have to be set");
+//					return;
+//				}
 			}
 		} catch (IOException io) {
 			io.printStackTrace();
@@ -90,7 +120,7 @@ public class TiKzBot extends TelegramBot
 			}
 		}
 
-		TiKzBot wb2 = new TiKzBot(tprop);
+		TiKzBot tikzBot = new TiKzBot(tprop);
 
 		try {
 			Thread.sleep(4000);
