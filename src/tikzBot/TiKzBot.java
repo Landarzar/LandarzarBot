@@ -5,6 +5,7 @@ package tikzBot;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -20,6 +21,8 @@ import net.landarzar.telegram.model.methodes.GetMe;
 import net.landarzar.telegram.model.methodes.SendMessage;
 import net.landarzar.telegram.model.types.CallbackQuery;
 import net.landarzar.telegram.model.types.ChosenInlineResult;
+import net.landarzar.telegram.model.types.InlineKeyboardButton;
+import net.landarzar.telegram.model.types.InlineKeyboardMarkup;
 import net.landarzar.telegram.model.types.InlineQuery;
 import net.landarzar.telegram.model.types.Message;
 import net.landarzar.telegram.model.types.Update;
@@ -44,7 +47,7 @@ public class TiKzBot extends TelegramBot
 		handler.setLevel(Level.ALL);
 		log.addHandler(handler);
 
-		TelegramBotProperties tprop = new TelegramBotProperties(275871224, "AAGgkiiX0ddEQMH_RhNR5biZUoXpv8ciEjA");
+		TelegramBotProperties tprop = new TelegramBotProperties(198962847, "AAFjsFIVm5TqYmaMjpcv7XtwgrsNcZdytGU");
 
 		// Loading Properties;
 		Properties prop = new Properties();
@@ -57,6 +60,15 @@ public class TiKzBot extends TelegramBot
 				System.out.println("Sorry, unable to find " + filename);
 			} else {
 
+				prop.load(input);
+				
+				tprop.SYSTEM_THREADED = Boolean.parseBoolean(prop.getProperty("SYSTEM_THREADED"));
+				tprop.SYSTEM_TICK = Integer.parseInt(prop.getProperty("SYSTEM_TICK"));
+				tprop.NET_BOT_ID = Integer.parseInt(prop.getProperty("NET_BOT_ID"));
+				tprop.NET_BOT_TOKEN = prop.getProperty("NET_BOT_TOKEN");
+				tprop.NET_UPDATE_INTERVAL = Integer.parseInt(prop.getProperty("NET_UPDATE_INTERVAL"));
+				tprop.NET_BASEURL= prop.getProperty("NET_BASEURL");
+
 				// // load a properties file from class path, inside static
 				// method
 				// prop.load(input);
@@ -66,6 +78,8 @@ public class TiKzBot extends TelegramBot
 				// System.out.println(prop.getProperty("dbuser"));
 				// System.out.println(prop.getProperty("dbpassword"));
 			}
+		} catch (IOException io) {
+			io.printStackTrace();
 		} finally {
 			if (input != null) {
 				try {
@@ -81,12 +95,8 @@ public class TiKzBot extends TelegramBot
 		try {
 			Thread.sleep(4000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		wb2.conn.enque(new GetMe((mr, j) -> {
-			System.out.println(j.toString());
-		}));
 	}
 
 	/**
@@ -154,12 +164,23 @@ public class TiKzBot extends TelegramBot
 			iqra.id = "0";
 			iqra.title = "Test Text";
 			iqra.input_message_content = new InputTextMessageContent("Iam a text");
+			iqra.reply_markup = new InlineKeyboardMarkup();
+			LinkedList<InlineKeyboardButton> ll = new LinkedList<>();
+			ll.add(new InlineKeyboardButton("Yes", "1"));
+			ll.add(new InlineKeyboardButton("No", "2"));
+			LinkedList<InlineKeyboardButton> ll2 = new LinkedList<>();
+			ll2.add(new InlineKeyboardButton("Yes", "3"));
+			ll2.add(new InlineKeyboardButton("No", "4"));
+			iqra.reply_markup.field.add(ll);
+			iqra.reply_markup.field.add(ll2);
 			answer.results.add(iqra);
-			iqra = new InlineQueryResultArticle();
-			iqra.id = "1";
-			iqra.title = "Test Text, too";
-			iqra.input_message_content = new InputTextMessageContent("Iam a text, tooo");
-			answer.results.add(iqra);
+
+			// iqra = new InlineQueryResultArticle();
+			// iqra.id = "1";
+			// iqra.title = "Test Text, too";
+			// iqra.input_message_content = new InputTextMessageContent("Iam a
+			// text, tooo");
+			// answer.results.add(iqra);
 
 			this.methodEnqueue(answer);
 		}
@@ -175,8 +196,7 @@ public class TiKzBot extends TelegramBot
 	@Override
 	protected void onChosenInlineResult(ChosenInlineResult result, Update update)
 	{
-		// TODO Auto-generated method stub
-
+		System.out.println("ChosenInLineResult" + result.query);
 	}
 
 	/*
@@ -189,8 +209,7 @@ public class TiKzBot extends TelegramBot
 	@Override
 	protected void onCallbackQuery(CallbackQuery query, Update update)
 	{
-		// TODO Auto-generated method stub
-
+		System.out.println("CallbackQuery" + query.toString());
 	}
 
 }
