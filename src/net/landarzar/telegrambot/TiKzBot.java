@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tikzBot;
+package net.landarzar.telegrambot;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import javax.json.JsonObject;
+
+import org.omg.CORBA.portable.ApplicationException;
 
 import net.landarzar.telegram.TelegramBot;
 import net.landarzar.telegram.TelegramBotProperties;
@@ -47,8 +49,9 @@ public class TiKzBot extends TelegramBot
 		handler.setLevel(Level.ALL);
 		log.addHandler(handler);
 
-		TelegramBotProperties tprop = new TelegramBotProperties(198962847, "AAFjsFIVm5TqYmaMjpcv7XtwgrsNcZdytGU");
+		TelegramBotProperties tprop = new TelegramBotProperties();
 
+		
 		// Loading Properties;
 		Properties prop = new Properties();
 		InputStream input = null;
