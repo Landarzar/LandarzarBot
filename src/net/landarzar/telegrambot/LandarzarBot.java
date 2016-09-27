@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,17 +60,63 @@ public class LandarzarBot extends TelegramBot
 	{
 		// TODO Auto-generated method stub
 		System.out.println("[Message] " + msg.message_id + " " + msg.from.first_name);
+		if (msg.text != null && msg.text.startsWith("/kai")) {
+			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Iam your master");
+//			sm.
+			this.methodEnqueue(sm);
+		}
+		if (msg.text != null && msg.text.startsWith("/kuchen")) {
+			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "NOMNOMNOM!!");
+			this.methodEnqueue(sm);
+		} else if (msg.text != null && msg.text.startsWith("/random")) {
+			String[] strs = msg.text.split(" ");
 
-		SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Hello World");
-		this.methodEnqueue(sm);
+			if (strs.length == 2) {
+				try {
+					int max = Integer.parseInt(strs[1]);
+					SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
+							"Random number for " + msg.from.first_name + ": " + (1 + new Random().nextInt(max + 1)));
+					this.methodEnqueue(sm);
+				} catch (Exception e) {
+					SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
+							"Random for " + msg.from.first_name + ": " + strs[1 + new Random().nextInt(1)]);
+					this.methodEnqueue(sm);
+				}
+			} else if (strs.length == 3) {
+				try {
+					int min = Integer.parseInt(strs[1]);
+					int max = Integer.parseInt(strs[2]);
+					if (max + 2 > min) {
+						SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
+								"Random number for " + msg.from.first_name + ": " + (min + new Random().nextInt(1 + max - min)));
+						this.methodEnqueue(sm);
+					}
+				} catch (Exception e) {
+					SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
+							"Random for " + msg.from.first_name + ": " + strs[1 + new Random().nextInt(2)]);
+					this.methodEnqueue(sm);
+				}
+			}
+			else if (strs.length > 3) {
+				SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
+						"Random for " + msg.from.first_name + ": " + strs[1 + new Random().nextInt(strs.length - 1)]);
+				this.methodEnqueue(sm);
+			} else {
+
+				SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Random number for " + msg.from.first_name + ": " + new Random().nextInt(10));
+				this.methodEnqueue(sm);
+			}
+		}
+
 	}
-	
-	public void start(){
+
+	public void start()
+	{
 		super.StartBot();
 	}
-	
 
-	public void stop(){
+	public void stop()
+	{
 		super.StopBot();
 	}
 
@@ -156,6 +203,14 @@ public class LandarzarBot extends TelegramBot
 	protected void onCallbackQuery(CallbackQuery query, Update update)
 	{
 		System.out.println("CallbackQuery" + query.toString());
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isRunning()
+	{
+		return super.isAlive();
 	}
 
 }

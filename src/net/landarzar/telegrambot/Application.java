@@ -103,29 +103,51 @@ public class Application
 
 		try {
 			TelegramBotProperties tprop = loadProperties();
+			tprop.SYSTEM_THREADED = true;
 			LandarzarBot bot = new LandarzarBot(tprop);
-			
 
-            ConsoleReader reader = new ConsoleReader();
+			ConsoleReader reader = new ConsoleReader();
 
-            reader.setPrompt("prompt> ");
-            reader.addCompleter(new StringsCompleter("help", "start", "status", "stop", "send", "quit", "exit", "clear"));
-            
-            String line;
-            PrintWriter out = new PrintWriter(reader.getOutput());
+			reader.setPrompt("prompt> ");
+			reader.addCompleter(new StringsCompleter("help", "start", "status", "stop", "send", "quit", "exit", "clear"));
 
-            while ((line = reader.readLine()) != null) {
-                    out.println("======>\"" + line + "\"");
-                
-                out.flush();
-                if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
-                    break;
-                }
-                if (line.equalsIgnoreCase("clear")) {
-                    reader.clearScreen();
-                }
-            }
+			String line;
+			PrintWriter out = new PrintWriter(reader.getOutput());
 
+			while ((line = reader.readLine()) != null) {
+
+				if (line.equalsIgnoreCase("help")) {
+					out.println("Verfügbare Befehle:");
+					out.println("help:\tZeigt diese Hilfe");
+					out.println("start:\tStartet den Server");
+					out.println("status:\tZeigt den Status des Servers an");
+					out.println("stop:\tStoppt den Server");
+					out.println("send:\tSendet eine Nachricht");
+					out.println("quit:\tBeendet das Programm");
+					out.println("exit:\tBeendet das Programm");
+					out.println("clear:\tConsole leeren");
+					out.flush();
+				}
+				else if (line.equalsIgnoreCase("status")) {
+					out.println("Alive: " + bot.isRunning());
+					out.flush();
+				}
+				else if (line.equalsIgnoreCase("start")) {
+					bot.start();
+				}
+				else if (line.equalsIgnoreCase("stop")) {
+					bot.stop();
+				}
+				else if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
+					break;
+				}
+				else if (line.equalsIgnoreCase("clear")) {
+					reader.clearScreen();
+				} else {
+					out.println("======> Unbekannt: \"" + line + "\"");
+					out.flush();
+				}
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
