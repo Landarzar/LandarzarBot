@@ -20,3 +20,6 @@ rootProject.name = 'landarzarBot'
 
 include ':TelegramBot'
 project(':TelegramBot').projectDir = new File(settingsDir, '../TelegramBot')
+
+include ':Werewolf'
+project(':Werewolf').projectDir = new File(settingsDir, '../Werewolf')

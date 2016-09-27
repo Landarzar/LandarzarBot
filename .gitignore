@@ -3,3 +3,8 @@
 /target/
 /.gradle/
 /bin/
+/gradle/
+/.classpath
+/.project
+/gradlew
+/gradlew.bat
