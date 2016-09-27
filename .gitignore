@@ -1,3 +1,5 @@
 /build/
 /config.properties
 /target/
+/.gradle/
+/bin/
