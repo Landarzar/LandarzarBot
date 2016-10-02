@@ -3,6 +3,7 @@
  */
 package net.landarzar.telegrambot;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -22,6 +23,7 @@ import net.landarzar.telegram.TelegramBotProperties;
 import net.landarzar.telegram.model.methodes.AnswerInlineQuery;
 import net.landarzar.telegram.model.methodes.GetMe;
 import net.landarzar.telegram.model.methodes.SendMessage;
+import net.landarzar.telegram.model.methodes.SendPhoto;
 import net.landarzar.telegram.model.types.CallbackQuery;
 import net.landarzar.telegram.model.types.ChosenInlineResult;
 import net.landarzar.telegram.model.types.InlineKeyboardButton;
@@ -62,9 +64,16 @@ public class LandarzarBot extends TelegramBot
 		System.out.println("[Message] " + msg.message_id + " " + msg.from.first_name);
 		if (msg.text != null && msg.text.startsWith("/kai")) {
 			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Iam your master");
-//			sm.
+			// sm.
 			this.methodEnqueue(sm);
 		}
+		
+//		if (msg.text != null && msg.text.startsWith("/atest")) {
+//			SendPhoto pm = new SendPhoto(Long.toString(msg.chat.id), "NOMNOMNOM!!"); 
+//			pm.photo_file = new File("/tmp/sw.jpg");
+//			this.methodEnqueue(pm);			
+//		}
+		
 		if (msg.text != null && msg.text.startsWith("/kuchen")) {
 			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "NOMNOMNOM!!");
 			this.methodEnqueue(sm);
@@ -96,8 +105,7 @@ public class LandarzarBot extends TelegramBot
 							"Random for " + msg.from.first_name + ": " + strs[1 + new Random().nextInt(2)]);
 					this.methodEnqueue(sm);
 				}
-			}
-			else if (strs.length > 3) {
+			} else if (strs.length > 3) {
 				SendMessage sm = new SendMessage(Long.toString(msg.chat.id),
 						"Random for " + msg.from.first_name + ": " + strs[1 + new Random().nextInt(strs.length - 1)]);
 				this.methodEnqueue(sm);
