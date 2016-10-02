@@ -3,6 +3,7 @@
  */
 package net.landarzar.telegrambot;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -33,7 +34,8 @@ public class Application
 
 		try {
 			String filename = "config.properties";
-			input = LandarzarBotPropierties.class.getClassLoader().getResourceAsStream(filename);
+			FileInputStream fis = new FileInputStream(filename);
+			input = fis;
 			if (input == null) {
 				System.out.println("Sorry, unable to find " + filename);
 			} else {
@@ -73,7 +75,8 @@ public class Application
 				}
 			}
 		} finally {
-			input.close();
+			if (input != null)
+				input.close();
 		}
 
 		return tprop;
