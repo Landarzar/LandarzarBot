@@ -23,6 +23,7 @@ repositories {
 mainClassName = "net.landarzar.telegrambot.Application"
 
 
+compileJava {options.encoding = "UTF-8"}
 
 
 // In this section you declare the dependencies for your production and test code
