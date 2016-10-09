@@ -6,7 +6,6 @@ package net.landarzar.telegrambot;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.security.InvalidParameterException;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -14,9 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import jline.console.ConsoleReader;
-import jline.console.completer.StringsCompleter;
 import net.landarzar.telegram.TelegramBotProperties;
+import net.landarzar.telegrambot.cake.CakeManager;
 
 /**
  * @author Kai Sauerwald
@@ -24,7 +22,7 @@ import net.landarzar.telegram.TelegramBotProperties;
  */
 public class Application
 {
-	public static TelegramBotProperties loadProperties() throws IOException
+	public static LandarzarBotPropierties loadProperties() throws IOException
 	{
 		LandarzarBotPropierties tprop = new LandarzarBotPropierties();
 
@@ -36,44 +34,45 @@ public class Application
 			String filename = "config.properties";
 			FileInputStream fis = new FileInputStream(filename);
 			input = fis;
-			if (input == null) {
-				System.out.println("Sorry, unable to find " + filename);
-			} else {
 
-				prop.load(input);
+			prop.load(input);
 
-				if (prop.getProperty("SYSTEM_THREADED") != null) {
-					tprop.SYSTEM_THREADED = Boolean.parseBoolean(prop.getProperty("SYSTEM_THREADED"));
-				}
-
-				if (prop.getProperty("SYSTEM_TICK") != null) {
-					tprop.SYSTEM_TICK = Integer.parseInt(prop.getProperty("SYSTEM_TICK"));
-				}
-
-				if (prop.getProperty("NET_BOT_ID") != null) {
-					tprop.NET_BOT_ID = Integer.parseInt(prop.getProperty("NET_BOT_ID"));
-				} else {
-					throw new InvalidParameterException(("NET_BOT_ID have to be set"));
-				}
-
-				if (prop.getProperty("NET_BOT_TOKEN") != null) {
-					tprop.NET_BOT_TOKEN = prop.getProperty("NET_BOT_TOKEN");
-				} else {
-					throw new InvalidParameterException(("NET_BOT_TOKEN have to be set"));
-				}
-
-				if (prop.getProperty("NET_UPDATE_INTERVAL") != null) {
-					tprop.NET_UPDATE_INTERVAL = Integer.parseInt(prop.getProperty("NET_UPDATE_INTERVAL"));
-				}
-
-				if (prop.getProperty("NET_BASEURL") != null) {
-					tprop.NET_BASEURL = prop.getProperty("NET_BASEURL");
-				}
-
-				if (prop.getProperty("LOG_LEVEL") != null) {
-					tprop.LOG_LEVEL = Level.parse(prop.getProperty("LOG_LEVEL"));
-				}
+			if (prop.getProperty("SYSTEM_THREADED") != null) {
+				tprop.SYSTEM_THREADED = Boolean.parseBoolean(prop.getProperty("SYSTEM_THREADED"));
 			}
+
+			if (prop.getProperty("SYSTEM_TICK") != null) {
+				tprop.SYSTEM_TICK = Integer.parseInt(prop.getProperty("SYSTEM_TICK"));
+			}
+
+			if (prop.getProperty("NET_BOT_ID") != null) {
+				tprop.NET_BOT_ID = Integer.parseInt(prop.getProperty("NET_BOT_ID"));
+			} else {
+				throw new InvalidParameterException(("NET_BOT_ID have to be set"));
+			}
+
+			if (prop.getProperty("NET_BOT_TOKEN") != null) {
+				tprop.NET_BOT_TOKEN = prop.getProperty("NET_BOT_TOKEN");
+			} else {
+				throw new InvalidParameterException(("NET_BOT_TOKEN have to be set"));
+			}
+
+			if (prop.getProperty("NET_UPDATE_INTERVAL") != null) {
+				tprop.NET_UPDATE_INTERVAL = Integer.parseInt(prop.getProperty("NET_UPDATE_INTERVAL"));
+			}
+
+			if (prop.getProperty("NET_BASEURL") != null) {
+				tprop.NET_BASEURL = prop.getProperty("NET_BASEURL");
+			}
+
+			if (prop.getProperty("LOG_LEVEL") != null) {
+				tprop.LOG_LEVEL = Level.parse(prop.getProperty("LOG_LEVEL"));
+			}
+
+			if (prop.getProperty("CAKE_DB_PATH") != null) {
+				tprop.CAKE_DB_PATH = prop.getProperty("CAKE_DB_PATH");
+			}
+
 		} finally {
 			if (input != null)
 				input.close();
@@ -93,9 +92,19 @@ public class Application
 		log.addHandler(handler);
 
 		try {
-			TelegramBotProperties tprop = loadProperties();
+			LandarzarBotPropierties tprop = loadProperties();
 			tprop.SYSTEM_THREADED = true;
-			LandarzarBot bot = new LandarzarBot(tprop);
+			
+			
+			CakeManager cm = new CakeManager(tprop.CAKE_DB_PATH);
+			try {
+				cm.loadData();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			
+			LandarzarBot bot = new LandarzarBot(tprop,cm);
 
 			bot.start();
 

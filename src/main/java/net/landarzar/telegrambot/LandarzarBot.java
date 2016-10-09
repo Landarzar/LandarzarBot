@@ -34,6 +34,7 @@ import net.landarzar.telegram.model.types.Update;
 import net.landarzar.telegram.model.types.inline.InlineQueryResult;
 import net.landarzar.telegram.model.types.inline.InlineQueryResultArticle;
 import net.landarzar.telegram.model.types.inline.InputTextMessageContent;
+import net.landarzar.telegrambot.cake.CakeManager;
 
 /**
  * @author Kai Sauerwald
@@ -45,10 +46,16 @@ public class LandarzarBot extends TelegramBot
 	 * @param prop
 	 *            Einstellungen für den Server
 	 */
-	public LandarzarBot(TelegramBotProperties prop)
+	public LandarzarBot(TelegramBotProperties prop, CakeManager cm)
 	{
 		super(prop);
+		this.cm = cm;
 	}
+	
+	/***
+	 * Datenbank mit Kuchenrezepten
+	 */
+	private CakeManager cm;
 
 	/*
 	 * (non-Javadoc)
@@ -67,14 +74,12 @@ public class LandarzarBot extends TelegramBot
 			// sm.
 			this.methodEnqueue(sm);
 		}
-		
-//		if (msg.text != null && msg.text.startsWith("/atest")) {
-//			SendPhoto pm = new SendPhoto(Long.toString(msg.chat.id), "NOMNOMNOM!!"); 
-//			pm.photo_file = new File("/tmp/sw.jpg");
-//			this.methodEnqueue(pm);			
-//		}
-		
-		if (msg.text != null && msg.text.startsWith("/kuchen")) {
+
+		if (msg.text != null && msg.text.startsWith("/kuchenRezept")) {
+			SendPhoto pm = new SendPhoto(Long.toString(msg.chat.id), "NOMNOMNOM!!");
+			pm.photo_file = new File("/tmp/sw.jpg");
+			this.methodEnqueue(pm);
+		} else if (msg.text != null && msg.text.startsWith("/kuchen")) {
 			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "NOMNOMNOM!!");
 			this.methodEnqueue(sm);
 		} else if (msg.text != null && msg.text.startsWith("/random")) {
