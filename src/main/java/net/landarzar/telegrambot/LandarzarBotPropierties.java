@@ -24,5 +24,5 @@ public class LandarzarBotPropierties extends TelegramBotProperties
 	/***
 	 * Gibt an unter welchen Pfad der Kuchen Datenbank zu finden ist.
 	 */
-	public String CAKE_DB_PATH = null;
+	public String CAKE_DB_PATH = "/home/kai/git/telegram/kuchen/";
 }

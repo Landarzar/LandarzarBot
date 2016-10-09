@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import net.landarzar.telegram.TelegramBotProperties;
 import net.landarzar.telegrambot.cake.CakeManager;
 
 /**
@@ -23,7 +22,7 @@ import net.landarzar.telegrambot.cake.CakeManager;
 public class Application
 {
 	public static LandarzarBotPropierties loadProperties() throws IOException
-	{
+	{		
 		LandarzarBotPropierties tprop = new LandarzarBotPropierties();
 
 		// Loading Properties;
@@ -32,8 +31,7 @@ public class Application
 
 		try {
 			String filename = "config.properties";
-			FileInputStream fis = new FileInputStream(filename);
-			input = fis;
+			input = new FileInputStream(filename);
 
 			prop.load(input);
 

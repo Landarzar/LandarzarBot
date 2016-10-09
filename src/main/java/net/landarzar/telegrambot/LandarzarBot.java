@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
@@ -22,6 +23,7 @@ import net.landarzar.telegram.TelegramBot;
 import net.landarzar.telegram.TelegramBotProperties;
 import net.landarzar.telegram.model.methodes.AnswerInlineQuery;
 import net.landarzar.telegram.model.methodes.GetMe;
+import net.landarzar.telegram.model.methodes.Method;
 import net.landarzar.telegram.model.methodes.SendMessage;
 import net.landarzar.telegram.model.methodes.SendPhoto;
 import net.landarzar.telegram.model.types.CallbackQuery;
@@ -51,7 +53,7 @@ public class LandarzarBot extends TelegramBot
 		super(prop);
 		this.cm = cm;
 	}
-	
+
 	/***
 	 * Datenbank mit Kuchenrezepten
 	 */
@@ -69,17 +71,26 @@ public class LandarzarBot extends TelegramBot
 	{
 		// TODO Auto-generated method stub
 		System.out.println("[Message] " + msg.message_id + " " + msg.from.first_name);
-		if (msg.text != null && msg.text.startsWith("/kai")) {
-			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Iam your master");
-			// sm.
-			this.methodEnqueue(sm);
-		}
+		// if (msg.text != null && msg.text.startsWith("/kai")) {
+		// SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "Iam
+		// your master");
+		// // sm.
+		// this.methodEnqueue(sm);
+		// }
 
-		if (msg.text != null && msg.text.startsWith("/kuchenRezept")) {
-			SendPhoto pm = new SendPhoto(Long.toString(msg.chat.id), "NOMNOMNOM!!");
-			pm.photo_file = new File("/tmp/sw.jpg");
-			this.methodEnqueue(pm);
-		} else if (msg.text != null && msg.text.startsWith("/kuchen")) {
+		// if (msg.text != null && msg.text.startsWith("/kuchenRezept")) {
+		// SendPhoto pm = new SendPhoto(Long.toString(msg.chat.id),
+		// "NOMNOMNOM!!");
+		// pm.photo_file = new File("/tmp/sw.jpg");
+		// this.methodEnqueue(pm);
+		// } else
+		if (msg.text != null && msg.text.startsWith("/kuchen") && cm.isProper()) {
+			List<Method> me = cm.handleCakeRequest(msg, update);
+			for (Method method : me) {
+				this.methodEnqueue(method);
+			}
+		}
+		if (msg.text != null && msg.text.startsWith("/eat")) {
 			SendMessage sm = new SendMessage(Long.toString(msg.chat.id), "NOMNOMNOM!!");
 			this.methodEnqueue(sm);
 		} else if (msg.text != null && msg.text.startsWith("/random")) {
